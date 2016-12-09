@@ -22,14 +22,13 @@ class Receiving extends Application
 		$this->data['pagebody'] = 'receiving/index';
 		$this->data['pagetitle'] = 'JappaDog';
 
-		$source = $this->receivings->all();
-
+		$ingredients = $this->receivings->all();
 		function cmp($a, $b)
 		{
-			return strcmp($a['name'], $b['name']);
+			return strcmp($a->name, $b->name);
 		}
 
-		usort($source, "cmp");
+		usort($ingredients, "cmp");
 		/*foreach ($source as $record)
 		{
 			$ingredients[] = array ('name' => $record['name'],
@@ -37,7 +36,7 @@ class Receiving extends Application
 															'receiving' => $record['receiving'],
 															'measurement' => $record['measurement']);
 		}*/
-		$this->data['ingredients'] = $source;
+		$this->data['ingredients'] = $ingredients;
 
 		$this->render();
 	}
@@ -46,12 +45,19 @@ class Receiving extends Application
 	{
 		$name = str_replace("-"," ",$name);
 		$ingredient = $this->receivings->get($name);
-		$this->data['name'] = $ingredient['name'];
-		$this->data['instock'] = $ingredient['instock'];
-		$this->data['receiving'] = $ingredient['receiving'];
-		$this->data['measurement'] = $ingredient['measurement'];
+		$this->data['name'] = $ingredient->name;
+		$this->data['instock'] = $ingredient->instock;
+		$this->data['receiving'] = $ingredient->receiving;
+		$this->data['measurement'] = $ingredient->measurement;
 		$this->data['pagebody'] = 'receiving/single';
-		$this->data['pagetitle'] = $ingredient['name'];
+		$this->data['pagetitle'] = $ingredient->name;
 		$this->render();
+	}
+
+	public function order($id)
+	{
+		$this->receivings->update($id);
+		// $this->index();
+		redirect('/Receiving');
 	}
 }

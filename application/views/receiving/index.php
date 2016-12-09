@@ -16,7 +16,7 @@
         <td class="col-lg-1"></td>
         <td class="text-center">{receiving} boxes</td>
         <td class="text-center">{measurement} units/box</td>
-        <td><a class="btn btn-default" href="" role="button">Order</a></td>
+        <td><a class="btn btn-default" href="Receiving/Order/{id}" role="button">Order</a></td>
       </tr>
         {/ingredients}
     </table>
