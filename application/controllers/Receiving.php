@@ -19,8 +19,15 @@ class Receiving extends Application
 	 */
 	public function index()
 	{
-		$this->data['pagebody'] = 'receiving/index';
+
 		$this->data['pagetitle'] = 'JappaDog';
+
+		if($this->session->flashdata('Success')) {
+			$this->data['pagebody'] = 'receiving/success';
+			$this->data['success'] = $this->session->flashdata('Success');
+		} else {
+			$this->data['pagebody'] = 'receiving/index';
+		}
 
 		$ingredients = $this->receivings->all();
 		function cmp($a, $b)
@@ -57,7 +64,7 @@ class Receiving extends Application
 	public function order($id)
 	{
 		$this->receivings->update($id);
-		// $this->index();
+		$this->session->set_flashdata('Success', 'Succesfully Ordered');
 		redirect('/Receiving');
 	}
 }
