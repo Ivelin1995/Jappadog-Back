@@ -31,10 +31,7 @@ class Receivings extends CI_Model {
 
 	public function  update($id)
 	{
-		// $this->db->select("receiving,measurement,name");
-		// $this->db->where('id', $id);
-		// $query = $this->db->get('receiving');
-		// var_dump($query->result());
+		// update the instock amount of the ordered ingredient
 		$this->db->set('instock', 'receiving*measurement+instock', FALSE);
 		$this->db->where('id', $id);
 		$this->db->update('receiving');

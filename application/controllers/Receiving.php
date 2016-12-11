@@ -51,20 +51,38 @@ class Receiving extends Application
 	public function ingredient($name)
 	{
 		$name = str_replace("-"," ",$name);
+		var_dump($name);
 		$ingredient = $this->receivings->get($name);
 		$this->data['name'] = $ingredient->name;
 		$this->data['instock'] = $ingredient->instock;
 		$this->data['receiving'] = $ingredient->receiving;
 		$this->data['measurement'] = $ingredient->measurement;
-		$this->data['pagebody'] = 'receiving/single';
+		$this->data['id'] = $ingredient->id;
+
+		if($this->session->flashdata('Success')) {
+			$this->data['pagebody'] = 'receiving/single-success';
+			$this->data['success'] = $this->session->flashdata('Success');
+		} else {
+			$this->data['pagebody'] = 'receiving/single';
+		}
 		$this->data['pagetitle'] = $ingredient->name;
+		$this->session->set_flashdata('Single',$name);
 		$this->render();
 	}
 
 	public function order($id)
 	{
 		$this->receivings->update($id);
-		$this->session->set_flashdata('Success', 'Succesfully Ordered');
-		redirect('/Receiving');
+
+		if($this->session->flashdata('Single')) {
+			$name = $this->session->flashdata('Single');
+			$name = str_replace(" ","-",$name);
+			$this->session->set_flashdata('Success', 'Succesfully Ordered');
+			redirect('/Receiving/Ingredient/' . $name);
+		} else {
+			$this->session->set_flashdata('Success', 'Succesfully Ordered');
+			redirect('/Receiving');
+		}
+
 	}
 }
